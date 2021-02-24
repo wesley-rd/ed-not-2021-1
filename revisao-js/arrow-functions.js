@@ -13,7 +13,7 @@ console.log(quadrado(5));
 
 // tornando em arrow
 // a - não precisa de parenteses envolvendo o parametro
-// b - a palavra function é substituida pelo sina =>, DEPOIS do parametro
+// b - a palavra function é substituida pelo sinal =>, DEPOIS do parametro
 // c - não é necessário as chaves nem a palavra return
 const quadrado2 = n => n * n;
 console.log(quadrado2(9));

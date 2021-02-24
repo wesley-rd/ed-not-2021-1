@@ -90,9 +90,11 @@ let estado9 = {
     nome: 'Bahia',
     sigla: 'BA',
     area: 564733,
-    populacao: 14812617,
+    populacao: 14812617
 }
 estadosNe.push(estado9)
+
+
 
 //console.log(estadosNe);
 /*
@@ -101,7 +103,7 @@ estadosNe.push(estado9)
       segunda pela primeira. 
 */
 let divisor = (a, p) => a / p;
-console.log(divisor(564733, 14812617)); // foi utilizado area e população do estado9
+//console.log(divisor(564733, 14812617)); // foi utilizado area e população do estado9
 
 /*
    3) Percorra o vetor estadosNe usando um for tradicional. Para cada estado,
@@ -112,17 +114,54 @@ console.log(divisor(564733, 14812617)); // foi utilizado area e população do e
       Durante este mesmo loop, elimine a propriedade 'sigla' dos objetos.
 
 */
-for (let i = 0; i < estadosNe.length; i++) {
-    console.log(i, estadosNe[i]);
+
+
+for(let index = 0; i<estadosNe.length; index+=2-1){
+
+    const estado = estadosNe[index];
+
+    const result = divisor(estado.area, estado.populacao);
+
+    estado.densidadeDemografica = result;
+
+    delete estado.sigla;
+
+
 }
+
+console.table(estadosNe)
 
 /* 4) Escreva uma arrow function que receba um objeto. Na função, use for..in
       para extrair as propriedades e seus valores e exibi-los com console.log().
 
 */
 
+
+const forIn = (object)=>{
+        let props = []
+        let values =  []
+
+    for (element in object){
+
+        let prop = element
+        let value = object[element]
+
+        props.push(prop)
+        values.push(value)
+
+
+    }
+        console.log('propriedades do objeto=>>', props.join(' '))
+        console.log('valores do objeto =>>>', values.join(' '))
+}
+
 /* 5) Percorra o vetor estadosNe usando for..of. Para cada objeto no vetor,
-      invoque a função escrita em 4) para exibi-lo.
+      invoque a função escrita em 4) para exibi-lo.  
+*/
+
+for(object of estadosNe){
+    forIn(object)
+}
 
 /*
    6)
@@ -136,3 +175,6 @@ for (let i = 0; i < estadosNe.length; i++) {
          já existentes, e assim por diante.
 
 */
+
+let array = new Array();
+
