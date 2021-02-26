@@ -176,5 +176,5 @@ for(object of estadosNe){
 
 */
 
-let array = new Array();
+let array = [];
 
