@@ -1,18 +1,12 @@
-/*
-    MERGE SORT
-
-    No processo de ordenação, esse algoritmo 'desmonta' o vetor original
-    contendo N elementos até obter N vetores com 1 elemento cada um.
-    Em seguida utilizando a técnica de mesclagem (merge), 'remonta' o vetor
-    dessa vez com os elementos ja me ordem.
-*/
 let comps, divisoes, juncoes
-function mergeSort(array) {
+
+function mergeSort(array, fnComp) {
     
     function mesclar(arrayEsq, arrayDir) {
         let pEsq = 0, pDir = 0, vetRes = []
         while(pEsq < arrayEsq.length && pDir < arrayDir.length) {
-            if(arrayEsq[pEsq] < arrayDir[pDir]){
+            //if(arrayEsq[pEsq] < arrayDir[pDir])
+            if(fnComp(arrayDir[pDir], arrayEsq[pEsq])) { // parametros invertidos
                 vetRes.push(arrayEsq[pEsq])
                 pEsq++
             }else{
@@ -47,8 +41,8 @@ function mergeSort(array) {
         
         //console.log({arrayEsq, arrayDir})
 
-        arrayEsq = mergeSort(arrayEsq)
-        arrayDir =  mergeSort(arrayDir)
+        arrayEsq = mergeSort(arrayEsq, fnComp)
+        arrayDir =  mergeSort(arrayDir, fnComp)
 
         const arrayFinal = mesclar(arrayEsq, arrayDir)
         juncoes++
@@ -59,20 +53,27 @@ function mergeSort(array) {
     return array // array de 1 elemento, não modificado, CONDIÇÃO DE SAIDA, CASO O ARRAY SEJA DE APENAS 1 ELEMENTO
 }
 
-comps = 0, divisoes = 0, juncoes = 0
-//let num = [7, 4, 9, 3, 5, 8, 1, 10, 0, 2, 6]
-//let num = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-let num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-let numOrd = mergeSort(num)
-console.log({numOrd})
-console.log({comps,divisoes,juncoes})
 
-import {nomes} from './includes/100-mil-nomes.mjs'
+import {candidatos} from './includes/candidatos-2018.mjs'
 
 comps = 0, divisoes = 0, juncoes = 0
-console.time('Ordenando Nomes');
-const nomesOrd = mergeSort(nomes);
-console.timeEnd('Ordenando Nomes');
-let memoria = process.memoryUsage().heapUsed / 1024 / 1024
-console.log('Depois', nomesOrd);
-console.log({comps,divisoes,juncoes,memoria});
+
+//console.log('Antes', candidatos);
+console.time('Ordenando Candidatos');
+//Ordenando pelo nome da urna (NM_URNA_CANDIDATO)
+//const candidatosOrd = mergeSort(candidatos, (obj1, obj2) => obj1.NM_URNA_CANDIDATO > obj2.NM_URNA_CANDIDATO)
+
+// ordenando por dois níveis: primeiro por UE(SG_UE) e, dentro de UF, pelo número do candidato(NR_CANDIDATO)
+const candidatosOrd = mergeSort(candidatos, (obj1, obj2) => {
+    if(obj1.SG_UE === obj2.SG_UE) { // igualdade de UE
+        //Desempate pelo NR_CANDIDATO
+        return obj1.NR_CANDIDATO > obj2.NR_CANDIDATO
+    }
+    else return obj1.SG_UE > obj2.SG_UE  // A diferença se da por UE
+});
+
+
+console.timeEnd('Ordenando Candidatos...');
+//console.log('DEPOIS', candidatosOrd)
+candidatosOrd.map(obj => console.log(obj))
+console.log({comps,divisoes,juncoes});
